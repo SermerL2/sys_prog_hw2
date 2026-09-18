@@ -1,4 +1,3 @@
-#define _GNU_SOURCE
 #include "handler.h"
 #include <ucontext.h>
 #include <stdint.h>
@@ -7,32 +6,34 @@
 
 volatile sig_atomic_t g_fpe_count = 0;
 
-/* Упрощённый декодер длины div/idiv. Возвращает длину инструкции или -1. */
+/* Упрощённый декодер длины инструкции div/idiv.
+ * Возвращает длину в байтах или -1, если это не div/idiv. */
 static int decode_div_idiv_len(const uint8_t *code) {
     int i = 0;
 
-    /* Пропуск префиксов REX 0x40..0x4F */
+    /* Пропуск префиксов REX (0x40..0x4F) */
     if ((code[i] & 0xF0) == 0x40) i++;
 
+    /* Опкод */
     uint8_t opcode = code[i];
     if (opcode != 0xF6 && opcode != 0xF7) return -1;
     i++;
 
+    /* ModR/M: reg = /6 для div, /7 для idiv */
     uint8_t modrm = code[i];
     uint8_t reg   = (modrm >> 3) & 7;
-    if (reg != 6 && reg != 7) return -1;   /* /6 = div, /7 = idiv */
+    if (reg != 6 && reg != 7) return -1;
     i++;
 
     uint8_t mod = (modrm >> 6) & 3;
     uint8_t rm  = modrm & 7;
 
-    if (mod != 3) {                 /* операнд — память */
-        if (rm == 4) i++;           /* SIB */
-        if (mod == 0 && rm == 5) i += 4;
-        else if (mod == 1)       i += 1;
-        else if (mod == 2)       i += 4;
+    if (mod != 3) {                  /* операнд — память */
+        if (rm == 4) i++;            /* SIB */
+        if (mod == 0 && rm == 5) i += 4;   /* disp32 */
+        else if (mod == 1)       i += 1;   /* disp8  */
+        else if (mod == 2)       i += 4;   /* disp32 */
     }
-
     return i;
 }
 
@@ -47,12 +48,12 @@ static void fpe_handler(int sig, siginfo_t *info, void *ctx) {
     if (len <= 0) {
         fprintf(stderr, "[handler] не распознал инструкцию по адресу %p\n",
                 (void *)rip);
-        return;   /* вернёмся — программа упадёт с SIGFPE повторно */
+        return;
     }
 
-    /* Имитируем "деление на 0 = 0" */
-    uc->uc_mcontext.gregs[REG_RAX] = 0;   /* частное */
-    uc->uc_mcontext.gregs[REG_RDX] = 0;   /* остаток */
+    /* Имитируем «деление на 0 = 0» */
+    uc->uc_mcontext.gregs[REG_RAX] = 0;    /* частное */
+    uc->uc_mcontext.gregs[REG_RDX] = 0;    /* остаток */
     uc->uc_mcontext.gregs[REG_RIP] = rip + len;
 
     g_fpe_count++;

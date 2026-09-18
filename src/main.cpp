@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "handler.h"
-
-int scenario_A(void);
-int scenario_B(void);
+#include "scenarios.h"
 
 int main(void) {
     if (install_fpe_handler() != 0) {

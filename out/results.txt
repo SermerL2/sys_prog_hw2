@@ -1,0 +1,5 @@
+=== СВОДНАЯ ТАБЛИЦА ===
+demo_gcc_O0      2    | div:yes br:yes       | div:yes br:yes       |   B: b is 0     (result=0)
+demo_gcc_O3      2    | div:yes br:yes       | div:yes br:yes       |   B: b is 0     (result=0)
+demo_clang_O0    2    | div:yes br:yes       | div:yes br:yes       |   B: b is 0     (result=0)
+demo_clang_O3    2    | div:yes br:yes       | div:yes br:yes       |   B: b is NOT 0 (result=0)

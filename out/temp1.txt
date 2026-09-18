@@ -1,0 +1,31 @@
+
+demo_clang_O3:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .text:
+
+0000000000001240 <_Z10scenario_Bv>:
+    1240:	push   %rbx
+    1241:	sub    $0x10,%rsp
+    1245:	movl   $0xa,0xc(%rsp)
+    124d:	mov    0x2df1(%rip),%ecx        # 4044 <g_zero>
+    1253:	mov    0xc(%rsp),%eax
+    1257:	cltd
+    1258:	idiv   %ecx
+    125a:	mov    %eax,%ebx
+    125c:	lea    0xe52(%rip),%rdi        # 20b5 <_IO_stdin_used+0xb5>
+    1263:	mov    %eax,%esi
+    1265:	xor    %eax,%eax
+    1267:	call   1050 <printf@plt>
+    126c:	mov    %ebx,%eax
+    126e:	add    $0x10,%rsp
+    1272:	pop    %rbx
+    1273:	ret
+
+Disassembly of section .fini:

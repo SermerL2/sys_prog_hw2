@@ -1,0 +1,46 @@
+
+demo_gcc_O3:     file format elf64-x86-64
+
+
+Disassembly of section .init:
+
+Disassembly of section .plt:
+
+Disassembly of section .plt.got:
+
+Disassembly of section .plt.sec:
+
+Disassembly of section .text:
+
+0000000000001300 <_Z10scenario_Bv>:
+    1300:	endbr64
+    1304:	push   %rbx
+    1305:	sub    $0x10,%rsp
+    1309:	movl   $0xa,0xc(%rsp)
+    1311:	mov    0x2d15(%rip),%ecx        # 402c <g_zero>
+    1317:	mov    0xc(%rsp),%eax
+    131b:	cltd
+    131c:	idiv   %ecx
+    131e:	mov    %eax,%ebx
+    1320:	mov    %eax,%edx
+    1322:	test   %ecx,%ecx
+    1324:	jne    1348 <_Z10scenario_Bv+0x48>
+    1326:	lea    0xd1b(%rip),%rsi        # 2048 <_IO_stdin_used+0x48>
+    132d:	mov    $0x2,%edi
+    1332:	xor    %eax,%eax
+    1334:	call   10f0 <__printf_chk@plt>
+    1339:	add    $0x10,%rsp
+    133d:	mov    %ebx,%eax
+    133f:	pop    %rbx
+    1340:	ret
+    1341:	nopl   0x0(%rax)
+    1348:	lea    0xd16(%rip),%rsi        # 2065 <_IO_stdin_used+0x65>
+    134f:	mov    $0x2,%edi
+    1354:	xor    %eax,%eax
+    1356:	call   10f0 <__printf_chk@plt>
+    135b:	add    $0x10,%rsp
+    135f:	mov    %ebx,%eax
+    1361:	pop    %rbx
+    1362:	ret
+
+Disassembly of section .fini:
